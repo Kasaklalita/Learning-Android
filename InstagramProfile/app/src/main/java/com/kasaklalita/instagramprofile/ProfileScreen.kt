@@ -1,6 +1,7 @@
 package com.kasaklalita.instagramprofile
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -23,8 +24,9 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun ProfileScreen() {
     Column(modifier = Modifier.fillMaxSize()) {
-        TopBar(name = "Kasaklalita_official")
+        TopBar(name = "Kasaklalita_official", modifier = Modifier.padding(10.dp))
         Spacer(modifier = Modifier.height(4.dp))
+        ProfileSection()
     }
 }
 
@@ -36,7 +38,7 @@ fun TopBar(
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceAround,
-        modifier = modifier.fillMaxSize()
+        modifier = modifier.fillMaxWidth()
     ) {
         Icon(
             imageVector = Icons.Default.ArrowBack,
@@ -82,6 +84,8 @@ fun ProfileSection(
                     .size(100.dp)
                     .weight(3f)
             )
+            Spacer(modifier = Modifier.width(16.dp))
+            StatSection(modifier = Modifier.weight(7f))
         }
     }
 }
@@ -100,4 +104,40 @@ fun RoundImage(
             .padding(3.dp)
             .clip(CircleShape)
     )
+}
+
+@Composable
+fun StatSection(modifier: Modifier = Modifier) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceAround,
+        modifier = modifier
+    ) {
+        ProfileStat(numberText = "601", text = "Posts")
+        ProfileStat(numberText = "100K", text = "Followers")
+        ProfileStat(numberText = "72", text = "Following")
+    }
+}
+
+@Composable
+fun ProfileStat(
+    numberText: String,
+    text: String,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier
+    ) {
+        Text(
+            text = numberText,
+            fontWeight = FontWeight.Bold,
+            fontSize = 20.sp
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+        Text(
+            text = text
+        )
+    }
 }
