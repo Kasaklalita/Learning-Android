@@ -16,6 +16,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -27,6 +29,13 @@ fun ProfileScreen() {
         TopBar(name = "Kasaklalita_official", modifier = Modifier.padding(10.dp))
         Spacer(modifier = Modifier.height(4.dp))
         ProfileSection()
+        ProfileDescription(
+            displayName = "Android Developer",
+            description = "Lorem ipsum dolor sit amet, consectetur.\nDuis urna arcu, rhoncus nec nulla eget.\nVivamus non augue bibendum, aliquet sapien quis, eleifend nibh.",
+            url = "https://t.me/Kasaklalita",
+            followedBy = listOf("codinginflow", "miakhalifa"),
+            otherCount = 17
+        )
     }
 }
 
@@ -139,5 +148,63 @@ fun ProfileStat(
         Text(
             text = text
         )
+    }
+}
+
+@Composable
+fun ProfileDescription(
+    displayName: String,
+    description: String,
+    url: String,
+    followedBy: List<String>,
+    otherCount: Int
+) {
+    val letterSpacing = 0.5.sp
+    val lineHeight = 20.sp
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 20.dp)
+    ) {
+        Text(
+            text = displayName,
+            fontWeight = FontWeight.Bold,
+            letterSpacing = letterSpacing,
+            lineHeight = lineHeight
+        )
+        Text(
+            text = description,
+            letterSpacing = letterSpacing,
+            lineHeight = lineHeight
+        )
+        Text(
+            text = url,
+            letterSpacing = letterSpacing,
+            lineHeight = lineHeight,
+            color = Color(0xFF3D3D91)
+        )
+        if (followedBy.isNotEmpty()) {
+            Text(
+                text = buildAnnotatedString {
+                    val  boldStyle = SpanStyle(color = Color.Black, fontWeight = FontWeight.Bold)
+                    append("Followed by ")
+                    followedBy.forEachIndexed { index, name ->
+                        pushStyle(boldStyle)
+                        append(name)
+                        pop()
+                        if (index < followedBy.size - 1) {
+                            append(", ")
+                        }
+                    }
+                    if (otherCount > 2) {
+                        append(" and ")
+                        pushStyle(boldStyle)
+                        append("$otherCount others")
+                    }
+                },
+                letterSpacing = letterSpacing,
+                lineHeight = lineHeight
+            )
+        }
     }
 }
