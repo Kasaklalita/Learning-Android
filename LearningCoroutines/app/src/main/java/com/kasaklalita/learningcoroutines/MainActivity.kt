@@ -14,23 +14,20 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        GlobalScope.launch(Dispatchers.IO) {
-            Log.d(TAG, "Starting corouting in thread ${Thread.currentThread().name}")
-            val answer = doNetworkCall()
-            withContext(Dispatchers.Main) {
-                Log.d(TAG, "Setting text in thread ${Thread.currentThread().name}")
-                tvDummy.text = answer
+        Log.d(TAG, "Before run blocking")
+        runBlocking {
+            launch(Dispatchers.IO) {
+                delay(3000L)
+                Log.d(TAG, "Finished IO Coroutine 1")
             }
+            launch(Dispatchers.IO) {
+                delay(3000L)
+                Log.d(TAG, "Finished IO Coroutine 2")
+            }
+            Log.d(TAG, "Start of blocking")
+            delay(5000L)
+            Log.d(TAG, "End of blocking")
         }
+        Log.d(TAG, "After blocking")
     }
-}
-
-suspend fun doNetworkCall(): String {
-    delay(3000L)
-    return "This is the answer"
-}
-
-suspend fun doNetworkCall2(): String {
-    delay(3000L)
-    return "This is the answer"
 }
